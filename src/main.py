@@ -12,7 +12,7 @@ def run():
     if "converted_file" not in st.session_state:
         reset_converted_file()
 
-    st.title("Swift MT904 Parser")
+    st.title("Swift MT940 Parser")
 
     files = st.file_uploader(
         label="Select file(s) to parse",
