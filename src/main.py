@@ -1,3 +1,4 @@
+import time
 import streamlit as st
 from src.parser import parse_mt940, df_to_xlsx_bytes
 from src.options import option_map
@@ -34,6 +35,7 @@ def run():
 
     if files:
         if st.button("Parse"):
+            start = time.perf_counter()
             file_names = [file.name.rsplit(".")[0] for file in files]
             if len(set(file_names)) != len(file_names):
                 st.error("Duplicate filenames found")
@@ -42,7 +44,8 @@ def run():
                 processing_option = option_map[processing_label]
                 data = df_to_xlsx_bytes(dfs, file_names, processing_option)
                 st.session_state.converted_file = data
-                st.success("File parsed and ready for download.")
+                elapsed = time.perf_counter() - start
+                st.success(f"File parsed in {elapsed:.2f} seconds and ready for download.")
 
         if st.session_state.converted_file:
             st.download_button(
